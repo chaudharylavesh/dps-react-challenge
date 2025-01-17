@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import dpsLogo from './assets/DPS.svg';
+import SearchBar from './components/SearchBar';
 import './App.css';
 
-// Define our User interface based on the API response
 interface User {
 	id: number;
 	firstName: string;
@@ -14,12 +14,11 @@ interface User {
 }
 
 function App(): JSX.Element {
-	// State for users and loading
 	const [users, setUsers] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [searchTerm, setSearchTerm] = useState('');
 
-	// Fetch users when component mounts
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
@@ -36,23 +35,38 @@ function App(): JSX.Element {
 		fetchUsers();
 	}, []);
 
+	const handleSearch = (term: string) => {
+		setSearchTerm(term);
+	};
+
+	const filteredUsers = users.filter((user) => {
+		if (!searchTerm) return true;
+
+		const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+		return fullName.includes(searchTerm.toLowerCase());
+	});
+
 	return (
 		<div className="container">
 			<div className="header">
-				<a href="https://www.digitalproductschool.io/" target="_blank" rel="noopener noreferrer">
+				<a
+					href="https://www.digitalproductschool.io/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					<img src={dpsLogo} className="logo" alt="DPS logo" />
 				</a>
 			</div>
 			<div className="main-content">
 				<div className="filters">
-					{/* Filters will go here */}
+					<SearchBar onSearch={handleSearch} />
 				</div>
 
 				<div className="table-container">
 					{loading ? (
-						<p>Loading...</p>
+						<p className="status-message">Loading...</p>
 					) : error ? (
-						<p>Error: {error}</p>
+						<p className="status-message error">{error}</p>
 					) : (
 						<table className="user-table">
 							<thead>
@@ -63,11 +77,15 @@ function App(): JSX.Element {
 								</tr>
 							</thead>
 							<tbody>
-								{users.map(user => (
+								{filteredUsers.map((user) => (
 									<tr key={user.id}>
 										<td>{`${user.firstName} ${user.lastName}`}</td>
 										<td>{user.address.city}</td>
-										<td>{new Date(user.birthDate).toLocaleDateString()}</td>
+										<td>
+											{new Date(
+												user.birthDate
+											).toLocaleDateString()}
+										</td>
 									</tr>
 								))}
 							</tbody>
