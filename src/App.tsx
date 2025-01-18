@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import dpsLogo from './assets/DPS.svg';
 import SearchBar from './components/SearchBar';
+import CityDropdown from './components/CityDropdown';
 import './App.css';
 
 interface User {
@@ -18,6 +19,7 @@ function App(): JSX.Element {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState('');
+	const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -35,15 +37,32 @@ function App(): JSX.Element {
 		fetchUsers();
 	}, []);
 
+	// Get unique cities
+	const cities = useMemo(() => {
+		const citySet = new Set(users.map((user) => user.address.city));
+		return Array.from(citySet).sort();
+	}, [users]);
+
 	const handleSearch = (term: string) => {
 		setSearchTerm(term);
 	};
 
-	const filteredUsers = users.filter((user) => {
-		if (!searchTerm) return true;
+	const handleCityChange = (city: string | null) => {
+		setSelectedCity(city);
+	};
 
-		const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-		return fullName.includes(searchTerm.toLowerCase());
+	const filteredUsers = users.filter((user) => {
+		const nameMatch = searchTerm
+			? `${user.firstName} ${user.lastName}`
+				.toLowerCase()
+				.includes(searchTerm.toLowerCase())
+			: true;
+
+		const cityMatch = selectedCity
+			? user.address.city === selectedCity
+			: true;
+
+		return nameMatch && cityMatch;
 	});
 
 	return (
@@ -60,6 +79,11 @@ function App(): JSX.Element {
 			<div className="main-content">
 				<div className="filters">
 					<SearchBar onSearch={handleSearch} />
+					<CityDropdown
+						cities={cities}
+						selectedCity={selectedCity}
+						onCityChange={handleCityChange}
+					/>
 				</div>
 
 				<div className="table-container">
