@@ -1,8 +1,11 @@
 .container {
-	max-width: 1200px;
+	max-width: 80%;
 	margin: 0 auto;
 	padding: 2rem;
 	background-color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .header {
@@ -15,45 +18,78 @@
 }
 
 .main-content {
+	width: 100%;
 	background: white;
 	padding: 2rem;
 	border-radius: 8px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .filters {
+	display: flex;
+	gap: 1rem;
 	margin-bottom: 2rem;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.table-container {
+	width: 100%;
+	max-width: 900px;
+	margin: 0 auto;
+	overflow-x: auto;
 }
 
 .user-table {
 	width: 100%;
 	border-collapse: collapse;
-	color: #333;
+	margin: 0 auto;
 }
 
 .user-table th,
 .user-table td {
 	padding: 0.75rem;
-	text-align: left;
+	text-align: center;
 	border: 1px solid #ddd;
-	background-color: white;
+	color: #333;
 }
 
 .user-table th {
 	background-color: #f5f5f5;
 	font-weight: bold;
-	color: #333;
 }
 
 .user-table tr:hover {
 	background-color: #f9f9f9;
 }
 
+.user-table tr.highlight {
+	background-color: #e3f2fd !important;
+}
+
+.user-table tr.highlight:hover {
+	background-color: #bbdefb !important;
+}
+
 .status-message {
+	text-align: center;
 	color: #333;
-	font-size: 1rem;
 }
 
 .status-message.error {
 	color: #dc3545;
+}
+
+/* Ensure table cells have transparent background to show highlight */
+.user-table td {
+	background-color: transparent !important;
+}
+
+/* Force white background for non-highlighted rows */
+.user-table tr:not(.highlight) td {
+	background-color: white !important;
 }

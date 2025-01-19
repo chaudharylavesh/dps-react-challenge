@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import dpsLogo from './assets/DPS.svg';
 import SearchBar from './components/SearchBar';
 import CityDropdown from './components/CityDropdown';
+import HighlightCheckbox from './components/HighlightCheckbox';
 import './App.css';
 
 interface User {
@@ -20,6 +21,7 @@ function App(): JSX.Element {
 	const [error, setError] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [selectedCity, setSelectedCity] = useState<string | null>(null);
+	const [highlightOldest, setHighlightOldest] = useState(false);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -37,7 +39,6 @@ function App(): JSX.Element {
 		fetchUsers();
 	}, []);
 
-	// Get unique cities
 	const cities = useMemo(() => {
 		const citySet = new Set(users.map((user) => user.address.city));
 		return Array.from(citySet).sort();
@@ -50,6 +51,24 @@ function App(): JSX.Element {
 	const handleCityChange = (city: string | null) => {
 		setSelectedCity(city);
 	};
+
+	const handleHighlightChange = (checked: boolean) => {
+		setHighlightOldest(checked);
+	};
+
+	const oldestByCity = useMemo(() => {
+		const oldest: Record<string, User> = {};
+		users.forEach((user) => {
+			const city = user.address.city;
+			if (
+				!oldest[city] ||
+				new Date(user.birthDate) < new Date(oldest[city].birthDate)
+			) {
+				oldest[city] = user;
+			}
+		});
+		return oldest;
+	}, [users]);
 
 	const filteredUsers = users.filter((user) => {
 		const nameMatch = searchTerm
@@ -84,6 +103,10 @@ function App(): JSX.Element {
 						selectedCity={selectedCity}
 						onCityChange={handleCityChange}
 					/>
+					<HighlightCheckbox
+						checked={highlightOldest}
+						onChange={handleHighlightChange}
+					/>
 				</div>
 
 				<div className="table-container">
@@ -101,17 +124,30 @@ function App(): JSX.Element {
 								</tr>
 							</thead>
 							<tbody>
-								{filteredUsers.map((user) => (
-									<tr key={user.id}>
-										<td>{`${user.firstName} ${user.lastName}`}</td>
-										<td>{user.address.city}</td>
-										<td>
-											{new Date(
-												user.birthDate
-											).toLocaleDateString()}
-										</td>
-									</tr>
-								))}
+								{filteredUsers.map((user) => {
+									const isOldest =
+										highlightOldest &&
+										oldestByCity[user.address.city] &&
+										oldestByCity[user.address.city].id ===
+											user.id;
+
+									return (
+										<tr
+											key={user.id}
+											className={
+												isOldest ? 'highlight' : ''
+											}
+										>
+											<td>{`${user.firstName} ${user.lastName}`}</td>
+											<td>{user.address.city}</td>
+											<td>
+												{new Date(
+													user.birthDate
+												).toLocaleDateString()}
+											</td>
+										</tr>
+									);
+								})}
 							</tbody>
 						</table>
 					)}
