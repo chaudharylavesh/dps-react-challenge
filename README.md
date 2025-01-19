@@ -1,71 +1,72 @@
 # DPS Frontend Challenge - User Management System
 
-## Overview
+## Project Overview
 
-This project implements a CRM (Customer Relationship Management) interface for managing and viewing user data. It provides features for searching, filtering, and highlighting specific user records.
+A CRM interface focused on efficient user data management and visualization. The goal was to achieve the given tasks efficiently following the best coding practices
 
-## Features Implemented
+## Development Approach
 
--   **Name Search**: Dynamic search functionality with debounce for efficient filtering
--   **City Filter**: Dropdown to filter users by city
--   **Age Highlight**: Option to highlight the oldest person in each city
--   **Responsive Design**: Works well on different screen sizes
--   **Error Handling**: Proper loading states and error messages
+### Component Structure
 
-## Technologies Used
+I chose to split the interface into three main components:
 
--   React 18
--   TypeScript
--   Vite
--   Lodash (for debounce functionality)
+-   SearchBar
+-   CityDropdown
+-   HighlightCheckbox
+
+This separation makes the code more maintainable and reusable. Each component handles its specific functionality, making it easier to test and modify individual features.
+
+### Performance Considerations
+
+-   Implemented debouncing for the search functionality to prevent excessive filtering on every keystroke
+-   Used useMemo for computing unique cities and oldest users to avoid unnecessary recalculations
+-   Kept state management simple with React's built-in hooks, as Redux would be overkill for this scale
+
+### UI/UX Decisions
+
+-   Placed all filters at the top for easy access as also provided in the initial image
+-   Added hover effects and clear visual highlighting for better user interaction
+-   Maintained consistent styling across components
+
+### Data Management
+
+-   Centralized data fetching in the main App component
+-   Implemented proper loading and error states
+-   Used TypeScript interfaces to ensure data consistency
+-   Kept filtered data logic clear and maintainable
+
+## Setup and Installation
+
+```bash
+npm install
+npm run dev
+```
+
+Access the application at `http://localhost:3000`
+
+## Features
+
+-   Dynamic name search
+-   City-based filtering
+-   Age highlighting functionality
+-   Responsive design
+-   Error handling
 
 ## Project Structure
 
 ```
 src/
 ├── components/
-│   ├── SearchBar/
-│   ├── CityDropdown/
-│   └── HighlightCheckbox/
-├── App.tsx
-└── App.css
+│   ├── SearchBar/       # Handles name filtering
+│   ├── CityDropdown/    # Manages city selection
+│   └── HighlightCheckbox/  # Controls age highlighting
+├── App.tsx             # Main application logic
+└── App.css            # Styling
 ```
 
-## Implementation Details
+## Technologies Used
 
-### Search Functionality
-
--   Implements debounced search to optimize performance
--   Searches through both first and last names
--   Updates results in real-time
-
-### City Filtering
-
--   Dynamically generates city list from available data
--   Allows filtering users by their city
--   Includes option to show all cities
-
-### Highlight Feature
-
--   Identifies the oldest person in each city
--   Provides visual highlighting with distinct background color
--   Can be toggled on/off
-
-## Best Practices Followed
-
--   Type safety with TypeScript
--   Component-based architecture
--   Responsive design
--   Performance optimization with useMemo and debounce
--   Clean and maintainable code structure
--   Proper error handling
--   Accessibility considerations
-
-## Future Improvements
-
--   Add sorting functionality
--   Implement pagination for large datasets
--   Add more filter options
--   Enhance mobile responsiveness
--   Add unit tests
--   Add data export functionality
+-   React 18
+-   TypeScript
+-   Vite
+-   Lodash
