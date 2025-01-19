@@ -1,10 +1,9 @@
-// src/components/CityDropdown/index.tsx
 import './styles.css';
 
 interface CityDropdownProps {
-	cities: string[];
-	selectedCity: string | null;
-	onCityChange: (city: string | null) => void;
+	cities: string[]; // List of available cities
+	selectedCity: string | null; // Currently selected city
+	onCityChange: (city: string | null) => void; // Handler for city selection
 }
 
 const CityDropdown = ({
@@ -12,9 +11,10 @@ const CityDropdown = ({
 	selectedCity,
 	onCityChange,
 }: CityDropdownProps) => {
+	// Handle city selection changes
 	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const value = event.target.value;
-		onCityChange(value || null);
+		onCityChange(value || null); // Convert empty string to null
 	};
 
 	return (

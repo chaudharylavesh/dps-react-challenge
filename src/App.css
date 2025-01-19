@@ -1,3 +1,4 @@
+/* Main layout styles */
 .container {
 	max-width: 80%;
 	margin: 0 auto;
@@ -8,6 +9,7 @@
 	align-items: center;
 }
 
+/* Header section styles */
 .header {
 	text-align: center;
 	margin-bottom: 2rem;
@@ -17,6 +19,7 @@
 	height: 4rem;
 }
 
+/* Main content area styles */
 .main-content {
 	width: 100%;
 	background: white;
@@ -28,6 +31,7 @@
 	align-items: center;
 }
 
+/* Filter controls layout */
 .filters {
 	display: flex;
 	gap: 1rem;
@@ -37,6 +41,7 @@
 	flex-wrap: wrap;
 }
 
+/* Table container with responsive design */
 .table-container {
 	width: 100%;
 	max-width: 900px;
@@ -44,6 +49,7 @@
 	overflow-x: auto;
 }
 
+/* Table styles */
 .user-table {
 	width: 100%;
 	border-collapse: collapse;
@@ -63,10 +69,12 @@
 	font-weight: bold;
 }
 
+/* Table interaction styles */
 .user-table tr:hover {
 	background-color: #f9f9f9;
 }
 
+/* Highlight styles for oldest users */
 .user-table tr.highlight {
 	background-color: #e3f2fd !important;
 }
@@ -75,6 +83,7 @@
 	background-color: #bbdefb !important;
 }
 
+/* Status message styles */
 .status-message {
 	text-align: center;
 	color: #333;
@@ -84,12 +93,11 @@
 	color: #dc3545;
 }
 
-/* Ensure table cells have transparent background to show highlight */
+/* Ensure proper highlight visibility */
 .user-table td {
 	background-color: transparent !important;
 }
 
-/* Force white background for non-highlighted rows */
 .user-table tr:not(.highlight) td {
 	background-color: white !important;
 }

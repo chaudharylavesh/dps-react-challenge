@@ -9,6 +9,7 @@ interface SearchBarProps {
 const SearchBar = ({ onSearch }: SearchBarProps) => {
 	const [searchTerm, setSearchTerm] = useState('');
 
+	// Debounce search to avoid too many filter operations while typing
 	const debouncedSearch = useCallback(
 		debounce((value: string) => {
 			onSearch(value);

@@ -5,6 +5,7 @@ import CityDropdown from './components/CityDropdown';
 import HighlightCheckbox from './components/HighlightCheckbox';
 import './App.css';
 
+// it defines the structure of user data received from the API
 interface User {
 	id: number;
 	firstName: string;
@@ -16,6 +17,7 @@ interface User {
 }
 
 function App(): JSX.Element {
+	// State management for user data and UI controls
 	const [users, setUsers] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -23,6 +25,7 @@ function App(): JSX.Element {
 	const [selectedCity, setSelectedCity] = useState<string | null>(null);
 	const [highlightOldest, setHighlightOldest] = useState(false);
 
+	// her we fetch users data when component mounts
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
@@ -39,23 +42,13 @@ function App(): JSX.Element {
 		fetchUsers();
 	}, []);
 
+	// Extract unique cities from user data, memoized for performance
 	const cities = useMemo(() => {
 		const citySet = new Set(users.map((user) => user.address.city));
 		return Array.from(citySet).sort();
 	}, [users]);
 
-	const handleSearch = (term: string) => {
-		setSearchTerm(term);
-	};
-
-	const handleCityChange = (city: string | null) => {
-		setSelectedCity(city);
-	};
-
-	const handleHighlightChange = (checked: boolean) => {
-		setHighlightOldest(checked);
-	};
-
+	// Calculate the oldest person in each city
 	const oldestByCity = useMemo(() => {
 		const oldest: Record<string, User> = {};
 		users.forEach((user) => {
@@ -70,6 +63,20 @@ function App(): JSX.Element {
 		return oldest;
 	}, [users]);
 
+	// Event handlers for filters
+	const handleSearch = (term: string) => {
+		setSearchTerm(term);
+	};
+
+	const handleCityChange = (city: string | null) => {
+		setSelectedCity(city);
+	};
+
+	const handleHighlightChange = (checked: boolean) => {
+		setHighlightOldest(checked);
+	};
+
+	// Filter users based on search term and selected city
 	const filteredUsers = users.filter((user) => {
 		const nameMatch = searchTerm
 			? `${user.firstName} ${user.lastName}`
@@ -96,6 +103,7 @@ function App(): JSX.Element {
 				</a>
 			</div>
 			<div className="main-content">
+				{/* Filter controls section */}
 				<div className="filters">
 					<SearchBar onSearch={handleSearch} />
 					<CityDropdown
@@ -109,6 +117,7 @@ function App(): JSX.Element {
 					/>
 				</div>
 
+				{/* User data display section */}
 				<div className="table-container">
 					{loading ? (
 						<p className="status-message">Loading...</p>

@@ -1,44 +1,71 @@
-# DPS Frontend Coding Challenge
+# DPS Frontend Challenge - User Management System
 
 ## Overview
 
-This repository contains a very basic web application based on Typescript and React. Main application file is `App.tsx`. Node and npm are required.
+This project implements a CRM (Customer Relationship Management) interface for managing and viewing user data. It provides features for searching, filtering, and highlighting specific user records.
 
-## Environment Setup
+## Features Implemented
 
-Ensure you have Node.js (v14.x or later) and npm (v6.x or later) installed.  
-To set up and run the application, execute the following commands:
+-   **Name Search**: Dynamic search functionality with debounce for efficient filtering
+-   **City Filter**: Dropdown to filter users by city
+-   **Age Highlight**: Option to highlight the oldest person in each city
+-   **Responsive Design**: Works well on different screen sizes
+-   **Error Handling**: Proper loading states and error messages
+
+## Technologies Used
+
+-   React 18
+-   TypeScript
+-   Vite
+-   Lodash (for debounce functionality)
+
+## Project Structure
 
 ```
-npm install
-npm run dev
+src/
+├── components/
+│   ├── SearchBar/
+│   ├── CityDropdown/
+│   └── HighlightCheckbox/
+├── App.tsx
+└── App.css
 ```
 
-The application will then be accessible at http://localhost:3000.
+## Implementation Details
 
-## Project Context
+### Search Functionality
 
-You will be enhancing a new CRM (Customer Relationship Management) software aimed at managing customer data efficiently. Your task is to develop a feature that displays a searchable list of customers.
+-   Implements debounced search to optimize performance
+-   Searches through both first and last names
+-   Updates results in real-time
 
-Refer to the attached mockup image to guide your UI development 👇
+### City Filtering
 
-![Mockup](images/mockup.png)
+-   Dynamically generates city list from available data
+-   Allows filtering users by their city
+-   Includes option to show all cities
 
-## Challenge Tasks
+### Highlight Feature
 
--   **Fork this project:** Start by forking this repository
--   **UI Implementation:** Implement the user interface according to the provided design mockup.
--   **Data Integration:** Utilize the endpoint https://dummyjson.com/users to fetch user data. If no filter is applied all data is displayed.
--   **Client-side Filtering:** Implement the following filters:
-    -   **Name Filter:** An input field that dynamically filters by `firstName` or `lastName` as you type.
-    -   **City Filter:** A dropdown that lists all cities present in the data. Users can select a city to filter the list accordingly.
-    -   **Highlight Feature:** A checkbox that when checked, highlights the oldest users within each city (use data field `city`)
-    -   **Optional:** Implement a 1-second debounce on the Name Filter input. This means the application should delay the filter action until 1 second has passed without any further input from the user. This optimization helps reduce the number of processing calls, enhancing performance.
--   **Submission:** After completing the challenge, email us the URL of your GitHub repository.
--   **Further information:**
-    -   If there is anything unclear regarding requirements, contact us by replying to our email.
-    -   Use small commits, we want to see your progress towards the solution.
-    -   Code clean and follow the best practices.
+-   Identifies the oldest person in each city
+-   Provides visual highlighting with distinct background color
+-   Can be toggled on/off
 
-\
-Happy coding!
+## Best Practices Followed
+
+-   Type safety with TypeScript
+-   Component-based architecture
+-   Responsive design
+-   Performance optimization with useMemo and debounce
+-   Clean and maintainable code structure
+-   Proper error handling
+-   Accessibility considerations
+
+## Future Improvements
+
+-   Add sorting functionality
+-   Implement pagination for large datasets
+-   Add more filter options
+-   Enhance mobile responsiveness
+-   Add unit tests
+-   Add data export functionality
